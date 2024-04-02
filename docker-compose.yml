@@ -1,0 +1,14 @@
+version: '3.5'
+services:
+  openvpn-br0:
+    build:
+      context: ./build
+      dockerfile: Dockerfile
+    container_name: openvpn-br0
+    restart: always
+    cap_add:
+      - NET_ADMIN      
+    network_mode: host
+    logging:
+      options:
+        max-size: 100M
