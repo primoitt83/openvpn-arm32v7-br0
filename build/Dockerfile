@@ -2,9 +2,10 @@ FROM arm32v7/alpine:3.19.1
 
 RUN \
     # Add edge/testing for: pamtester
-    echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing/" >> /etc/apk/repositories && \
+    # echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing/" >> /etc/apk/repositories && \
     apk update && \
     apk add openvpn iptables bash easy-rsa bridge-utils && \
+    ln -s /usr/share/easy-rsa/easyrsa /usr/local/bin && \
     # clean-up
     rm -rf /root/.cache && mkdir -p /root/.cache && \
     rm -rf /tmp/* /var/tmp/* /var/cache/apk/* /var/cache/distfiles/*
@@ -24,6 +25,10 @@ ENV EASYRSA=/usr/share/easy-rsa \
     EASYRSA_CRL_DAYS=3650 \    
     EASYRSA_PKI=$OPENVPN/pki
 
+## Copy and run easy-rsa
+COPY ${PWD}/easyrsa.sh /
+#RUN chmod +x /easyrsa.sh && /easyrsa.sh    
+
 ## Copy openvpn-bridge
 COPY ${PWD}/openvpn-bridge /usr/local/bin/openvpn-bridge
 RUN chmod 744 /usr/local/bin/openvpn-bridge
@@ -36,5 +41,5 @@ COPY ${PWD}/ovpn.sh /etc/openvpn/pki/ovpn.sh
 COPY ${PWD}/entrypoint.sh /
 RUN chmod +x /entrypoint.sh
 
-#ENTRYPOINT ["/entrypoint.sh"]
-CMD sleep 100000000
+ENTRYPOINT ["/entrypoint.sh"]
+#CMD sleep 100000000

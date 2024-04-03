@@ -1,10 +1,17 @@
 #!/bin/bash
-# enable debug
+## enable debug
 set -x
 
-## first run openvpn
-openvpn --daemon --config /etc/openvpn/openvpn.conf
+## first create dev
+if [ ! -c /dev/net ]; then
+    mkdir -p /dev/net
+    if [ ! -c /dev/net/tun ]; then
+        mknod /dev/net/tun c 10 200
+    fi
+di
 
-## then run bridge
-#openvpn-bridge start
+## run openvpn-bridge before openvpn
+openvpn-bridge start
 
+## run openvpn
+openvpn --config /etc/openvpn/openvpn.conf
