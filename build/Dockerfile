@@ -4,14 +4,37 @@ RUN \
     # Add edge/testing for: pamtester
     echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing/" >> /etc/apk/repositories && \
     apk update && \
-    apk add openvpn iptables bash && \
+    apk add openvpn iptables bash easy-rsa bridge-utils && \
     # clean-up
     rm -rf /root/.cache && mkdir -p /root/.cache && \
     rm -rf /tmp/* /var/tmp/* /var/cache/apk/* /var/cache/distfiles/*
 
+## needed by easyrsa
+ENV OPENVPN=/etc/openvpn
+ENV EASYRSA=/usr/share/easy-rsa \
+    EASYRSA_REQ_COUNTRY="BR" \
+    EASYRSA_REQ_PROVINCE="Goias" \
+    EASYRSA_REQ_CITY="Goiania" \
+    EASYRSA_REQ_ORG="Itt CopyLeft" \
+    EASYRSA_REQ_EMAIL="primoitt@email.com" \
+    EASYRSA_REQ_OU="Itt Company" \
+    EASYRSA_KEY_SIZE=2048 \
+    EASYRSA_CA_EXPIRE=3650 \
+    EASYRSA_CERT_EXPIRE=3650 \
+    EASYRSA_CRL_DAYS=3650 \    
+    EASYRSA_PKI=$OPENVPN/pki
+
+## Copy openvpn-bridge
+COPY ${PWD}/openvpn-bridge /usr/local/bin/openvpn-bridge
+RUN chmod 744 /usr/local/bin/openvpn-bridge
+
+## Copy files
+COPY ${PWD}/openvpn.conf /etc/openvpn/openvpn.conf
+COPY ${PWD}/ovpn.sh /etc/openvpn/pki/ovpn.sh
 
 ## Copy entrypoint.sh
 COPY ${PWD}/entrypoint.sh /
 RUN chmod +x /entrypoint.sh
 
-ENTRYPOINT ["/entrypoint.sh"]
+#ENTRYPOINT ["/entrypoint.sh"]
+CMD sleep 100000000
