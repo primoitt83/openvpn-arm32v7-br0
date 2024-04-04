@@ -12,7 +12,7 @@ fi
 
 ## populate openvpn-brigde vars
 sed -i "s/ETH/$ETH/g" /usr/local/bin/openvpn-bridge
-sed -i "s/IP_NETMASK/$IP_NETMASK/g" /usr/local/bin/openvpn-bridge
+sed -i "s@IP_NETMASK@$IP_NETMASK@g" /usr/local/bin/openvpn-bridge
 sed -i "s/BROADCAST/$BROADCAST/g" /usr/local/bin/openvpn-bridge
 sed -i "s/GATEWAY/$GATEWAY/g" /usr/local/bin/openvpn-bridge
 

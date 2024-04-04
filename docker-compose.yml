@@ -7,8 +7,7 @@ services:
     container_name: openvpn-br0
     restart: always
     cap_add:
-      - NET_ADMIN
-    #entrypoint: "sleep 100000000"
+      - NET_ADMIN    
     environment:
       - ETH=eth0
       - IP_NETMASK="192.168.50.99/24"
@@ -19,4 +18,5 @@ services:
     network_mode: host
     logging:
       options:
-        max-size: 100M
+        max-size: 100M       
+
