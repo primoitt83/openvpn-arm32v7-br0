@@ -27,19 +27,24 @@ ENV EASYRSA=/usr/share/easy-rsa \
 
 ## Copy and run easy-rsa
 COPY ${PWD}/easyrsa.sh /
-#RUN chmod +x /easyrsa.sh && /easyrsa.sh    
+RUN chmod +x /easyrsa.sh && /easyrsa.sh    
 
 ## Copy openvpn-bridge
 COPY ${PWD}/openvpn-bridge /usr/local/bin/openvpn-bridge
 RUN chmod 744 /usr/local/bin/openvpn-bridge
 
-## Copy files
+## Copy and create files
+RUN mkdir -p /config
 COPY ${PWD}/openvpn.conf /etc/openvpn/openvpn.conf
+COPY ${PWD}/openvpn.conf /config/openvpn.conf
 COPY ${PWD}/ovpn.sh /etc/openvpn/pki/ovpn.sh
 
 ## Copy entrypoint.sh
 COPY ${PWD}/entrypoint.sh /
 RUN chmod +x /entrypoint.sh
 
+VOLUME ["/etc/openvpn"]
+
+EXPOSE 1194
+
 ENTRYPOINT ["/entrypoint.sh"]
-#CMD sleep 100000000
