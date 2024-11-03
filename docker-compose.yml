@@ -5,7 +5,7 @@ services:
       context: ./build
       dockerfile: Dockerfile
     container_name: openvpn-br0
-    restart: always
+    restart: no
     cap_add:
       - NET_ADMIN    
     environment:

@@ -1,6 +1,6 @@
 #!/bin/bash
 ## check image
-test=$(docker images |grep openvpn-arm32v7-br0_openvpn-br0)
+test=$(docker images |grep openvpn-arm32v7-br0)
 
 ## check if $test is not empty
 if [ ! -z "$test" ]; then 
